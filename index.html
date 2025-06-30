@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikSnap Pro - Download TikTok Videos Without Watermark</title>
+  <meta name="description" content="Download high-quality TikTok videos without watermarks instantly. Our tool removes watermarks while preserving video quality.">
+  <meta name="keywords" content="tiktok downloader, tiktok without watermark, video downloader, watermark remover">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --black: #000000;
+      --white: #FFFFFF;
+      --gray-100: #F5F5F5;
+      --gray-200: #EEEEEE;
+      --gray-300: #E0E0E0;
+      --gray-400: #BDBDBD;
+      --gray-500: #9E9E9E;
+      --gray-600: #757575;
+      --gray-700: #616161;
+      --gray-800: #424242;
+      --gray-900: #212121;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      --transition: all 0.3s ease;
+      --telegram-blue: #0088cc;
+      --accent-color: #4a6bff;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--white);
+      color: var(--gray-900);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: var(--transition);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      transition: var(--transition);
+    }
+    
+    /* Sidebar Styles */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 280px;
+      height: 100vh;
+      background: var(--white);
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+      transition: var(--transition);
+      overflow-y: auto;
+      padding: 20px 0;
+    }
+    
+    .sidebar.active {
+      left: 0;
+    }
+    
+    .sidebar-header {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--gray-200);
+      margin-bottom: 20px;
+    }
+    
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .sidebar-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--accent-color);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .sidebar-logo-icon i {
+      font-size: 18px;
+      color: var(--white);
+    }
+    
+    .sidebar-logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--black);
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: var(--gray-700);
+      text-decoration: none;
+      transition: var(--transition);
+      border-radius: var(--border-radius);
+    }
+    
+    .sidebar-menu a:hover {
+      background: var(--gray-100);
+      color: var(--black);
+      transform: translateX(5px);
+    }
+    
+    .sidebar-menu a.active {
+      background: var(--gray-100);
+      color: var(--black);
+      font-weight: 500;
+    }
+    
+    .sidebar-menu a i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+      font-size: 16px;
+    }
+    
+    .sidebar-footer {
+      padding: 20px;
+      border-top: 1px solid var(--gray-200);
+      margin-top: 20px;
+    }
+    
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+    
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 100;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .menu-toggle {
+      display: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--gray-800);
+      background: none;
+      border: none;
+      transition: var(--transition);
+    }
+    
+    .menu-toggle:hover {
+      color: var(--black);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    
+    .logo:hover {
+      opacity: 0.9;
+    }
+    
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--accent-color);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .logo-icon i {
+      font-size: 18px;
+      color: var(--white);
+    }
+    
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--black);
+    }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .language-selector {
+      position: relative;
+    }
+    
+    .language-btn {
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray-700);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+    }
+    
+    .language-btn:hover {
+      background: var(--gray-100);
+    }
+    
+    .language-dropdown {
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 10px 0;
+      min-width: 160px;
+      display: none;
+      z-index: 100;
+      border: 1px solid var(--gray-200);
+    }
+    
+    .language-dropdown.active {
+      display: block;
+    }
+    
+    .language-option {
+      padding: 10px 15px;
+      font-size: 14px;
+      color: var(--gray-800);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .language-option:hover {
+      background: var(--gray-100);
+    }
+    
+    .language-flag {
+      width: 20px;
+      height: 15px;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+    
+    /* Ad Container Styles - Improved */
+    .ad-container {
+      margin: 30px 0;
+      padding: 15px;
+      background: var(--gray-100);
+      border-radius: var(--border-radius);
+      text-align: center;
+      border: 1px solid var(--gray-200);
+      overflow: hidden; /* Prevents layout shift */
+      min-height: 90px; /* Minimum height to prevent collapse */
+    }
+    
+    .ad-container.top-ad {
+      margin-top: 0;
+    }
+    
+    .ad-label {
+      font-size: 12px;
+      color: var(--gray-500);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+    }
+    
+    /* Ensure ads are properly centered and responsive */
+    .adsbygoogle {
+      margin: 0 auto;
+      display: block !important;
+    }
+    
+    .hero {
+      text-align: center;
+      padding: 60px 0 40px;
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+    
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      line-height: 1.3;
+      color: var(--black);
+    }
+    
+    .hero p {
+      font-size: 16px;
+      color: var(--gray-600);
+      margin-bottom: 25px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .main-tool {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--box-shadow);
+      margin-bottom: 40px;
+      border: 1px solid var(--gray-200);
+    }
+    
+    .tool-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .tool-header h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--black);
+    }
+    
+    .input-group {
+      position: relative;
+      margin-bottom: 15px;
+    }
+    
+    .input-group i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-500);
+    }
+    
+    input[type="url"] {
+      width: 100%;
+      padding: 14px 14px 14px 45px;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--gray-300);
+      background-color: var(--white);
+      color: var(--gray-900);
+      font-size: 15px;
+      outline: none;
+      transition: var(--transition);
+    }
+    
+    input[type="url"]:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 2px rgba(74, 107, 255, 0.1);
+    }
+    
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: var(--border-radius);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn-primary {
+      background: var(--accent-color);
+      color: var(--white);
+    }
+    
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    
+    .btn-block {
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+    
+    .video-container {
+      margin-top: 20px;
+      display: none;
+    }
+    
+    .video-wrapper {
+      position: relative;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      margin-bottom: 15px;
+      background: var(--gray-100);
+      aspect-ratio: 9/16;
+      max-width: 350px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .video-thumbnail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .video-play-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .video-play-icon:hover {
+      background: rgba(0, 0, 0, 0.9);
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+    
+    .video-play-icon i {
+      color: white;
+      font-size: 20px;
+      margin-left: 3px;
+    }
+    
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+    
+    .video-loaded video {
+      display: block;
+    }
+    
+    .video-loaded .video-thumbnail,
+    .video-loaded .video-play-icon {
+      display: none;
+    }
+    
+    .video-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .video-info {
+      background: var(--gray-100);
+      padding: 15px;
+      border-radius: var(--border-radius);
+      margin-top: 15px;
+      max-width: 350px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .video-info-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .video-info-item:last-child {
+      border-bottom: none;
+    }
+    
+    .video-info-label {
+      color: var(--gray-600);
+      font-size: 14px;
+    }
+    
+    .video-info-value {
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 25px;
+    }
+    
+    .spinner {
+      width: 35px;
+      height: 35px;
+      margin: 0 auto 15px;
+      border: 4px solid var(--gray-200);
+      border-left-color: var(--accent-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+      margin-top: 10px;
+      color: var(--gray-600);
+      font-size: 14px;
+    }
+    
+    .error-message {
+      color: #dc3545;
+      background: rgba(220, 53, 69, 0.1);
+      padding: 15px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      margin: 15px 0;
+      display: none;
+      border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+    
+    .success-message {
+      color: #28a745;
+      background: rgba(40, 167, 69, 0.1);
+      padding: 15px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      margin: 15px 0;
+      display: none;
+      border: 1px solid rgba(40, 167, 69, 0.2);
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 40px 0;
+    }
+    
+    .feature-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      transition: var(--transition);
+      box-shadow: var(--box-shadow);
+      border: 1px solid var(--gray-200);
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    
+    .feature-icon {
+      width: 45px;
+      height: 45px;
+      background: var(--accent-color);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      font-size: 20px;
+      color: var(--white);
+    }
+    
+    .feature-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--black);
+    }
+    
+    .feature-desc {
+      color: var(--gray-600);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    
+    .tutorial {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: var(--white);
+      padding: 20px;
+      display: none;
+    }
+    
+    .tutorial.active {
+      display: flex;
+    }
+    
+    .tutorial-content {
+      max-width: 500px;
+      text-align: center;
+    }
+    
+    .tutorial-steps {
+      margin: 25px 0;
+    }
+    
+    .tutorial-step {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      text-align: left;
+    }
+    
+    .tutorial-step-number {
+      width: 30px;
+      height: 30px;
+      background: var(--white);
+      color: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    
+    .tutorial-step-content h3 {
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+    
+    .tutorial-step-content p {
+      font-size: 14px;
+      color: var(--gray-300);
+      line-height: 1.5;
+    }
+    
+    .tutorial-close {
+      margin-top: 20px;
+      padding: 10px 25px;
+      background: var(--white);
+      color: var(--black);
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .tutorial-close:hover {
+      background: var(--gray-200);
+    }
+    
+    .telegram-cta {
+      background: var(--gray-100);
+      padding: 30px;
+      border-radius: var(--border-radius);
+      text-align: center;
+      margin: 40px 0;
+      border: 1px solid var(--gray-200);
+      transition: var(--transition);
+    }
+    
+    .telegram-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    
+    .telegram-cta h2 {
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+    
+    .telegram-cta p {
+      margin-bottom: 20px;
+      color: var(--gray-600);
+      font-size: 14px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .telegram-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: var(--telegram-blue);
+      color: white;
+      border-radius: var(--border-radius);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+    
+    .telegram-btn:hover {
+      background: #0077b3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 136, 204, 0.2);
+    }
+    
+    footer {
+      background: var(--gray-100);
+      padding: 40px 0 30px;
+      margin-top: 50px;
+      border-top: 1px solid var(--gray-200);
+    }
+    
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    
+    .footer-column {
+      flex: 1;
+      min-width: 180px;
+    }
+    
+    .footer-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--black);
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      color: var(--gray-600);
+      text-decoration: none;
+      font-size: 14px;
+      transition: var(--transition);
+      display: inline-block;
+    }
+    
+    .footer-links a:hover {
+      color: var(--black);
+      transform: translateX(3px);
+    }
+    
+    .copyright {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--gray-200);
+      color: var(--gray-600);
+      font-size: 13px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .menu-toggle {
+        display: block;
+      }
+      
+      .container {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      
+      .sidebar.active ~ .container {
+        transform: translateX(280px);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero {
+        padding: 40px 0 30px;
+      }
+      
+      .hero h1 {
+        font-size: 28px;
+      }
+      
+      .hero p {
+        font-size: 15px;
+      }
+      
+      .main-tool {
+        padding: 20px;
+      }
+      
+      .video-actions {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+      
+      .feature-card {
+        padding: 20px;
+      }
+      
+      .footer-column {
+        min-width: 150px;
+      }
+      
+      .telegram-cta {
+        padding: 25px;
+      }
+      
+      /* Adjust ad container for mobile */
+      .ad-container {
+        min-height: 50px;
+        padding: 10px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 15px;
+      }
+      
+      .hero {
+        padding: 30px 0;
+      }
+      
+      .hero h1 {
+        font-size: 24px;
+      }
+      
+      .hero p {
+        font-size: 14px;
+      }
+      
+      .tool-header h2 {
+        font-size: 18px;
+      }
+      
+      .footer-column {
+        min-width: 100%;
+      }
+      
+      .sidebar {
+        width: 260px;
+      }
+      
+      .sidebar.active ~ .container {
+        transform: translateX(260px);
+      }
+      
+      .language-btn span {
+        display: none;
+      }
+      
+      .language-btn i {
+        margin-right: 0;
+      }
+      
+      .telegram-cta {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">
+          <i class="fas fa-video"></i>
+        </div>
+        <div class="sidebar-logo-text">TikSnap Pro</div>
+      </div>
+    </div>
+    
+    <ul class="sidebar-menu">
+      <li><a href="#downloader" class="active"><i class="fas fa-magic"></i> <span data-translate="menu_downloader">Watermark Remover</span></a></li>
+      <li><a href="#features"><i class="fas fa-star"></i> <span data-translate="menu_features">Features</span></a></li>
+      <li><a href="https://t.me/tiksnappro" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i> <span data-translate="menu_telegram">Telegram Channel</span></a></li>
+      <li><a href="#tutorial" class="tutorial-link"><i class="fas fa-question-circle"></i> <span data-translate="menu_help">Help</span></a></li>
+      <li><a href="#" id="termsLink"><i class="fas fa-file-alt"></i> <span data-translate="menu_terms">Terms</span></a></li>
+      <li><a href="#" id="privacyLink"><i class="fas fa-shield-alt"></i> <span data-translate="menu_privacy">Privacy</span></a></li>
+    </ul>
+    
+    <div class="sidebar-footer">
+      <p style="font-size: 13px; color: var(--gray-600);">TikSnap Pro © 2023</p>
+    </div>
+  </div>
+  
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+  
+  <!-- Main Content -->
+  <div class="container">
+    <header>
+      <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-video"></i>
+        </div>
+        <div class="logo-text">TikSnap Pro</div>
+      </a>
+      
+      <div class="header-actions">
+        <div class="language-selector">
+          <button class="language-btn" id="languageBtn">
+            <i class="fas fa-globe"></i> <span id="currentLanguage">English</span>
+          </button>
+          <div class="language-dropdown" id="languageDropdown">
+            <div class="language-option" data-lang="en">
+              <img src="https://flagcdn.com/w20/gb.png" class="language-flag" alt="English">
+              <span>English</span>
+            </div>
+            <div class="language-option" data-lang="es">
+              <img src="https://flagcdn.com/w20/es.png" class="language-flag" alt="Español">
+              <span>Español</span>
+            </div>
+            <div class="language-option" data-lang="fr">
+              <img src="https://flagcdn.com/w20/fr.png" class="language-flag" alt="Français">
+              <span>Français</span>
+            </div>
+            <div class="language-option" data-lang="de">
+              <img src="https://flagcdn.com/w20/de.png" class="language-flag" alt="Deutsch">
+              <span>Deutsch</span>
+            </div>
+            <div class="language-option" data-lang="ar">
+              <img src="https://flagcdn.com/w20/sa.png" class="language-flag" alt="العربية">
+              <span>العربية</span>
+            </div>
+            <div class="language-option" data-lang="zh">
+              <img src="https://flagcdn.com/w20/cn.png" class="language-flag" alt="中文">
+              <span>中文</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Top Ad Unit - Improved Implementation -->
+    <div class="ad-container top-ad">
+      <span class="ad-label">Advertisement</span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625976681275599"
+           crossorigin="anonymous"></script>
+      <!-- Millionaire - Responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6625976681275599"
+           data-ad-slot="1121232672"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    
+    <section class="hero">
+      <h1 data-translate="hero_title">Download TikTok Videos Without Watermark</h1>
+      <p data-translate="hero_subtitle">Get high-quality TikTok videos without watermark instantly. Our advanced tools ensure the best quality with no traces.</p>
+      <button class="btn btn-primary" id="tryNowBtn">
+        <i class="fas fa-download"></i> <span data-translate="try_now">Try It Now</span>
+      </button>
+    </section>
+    
+    <section class="main-tool" id="downloader">
+      <div class="tool-header">
+        <h2 data-translate="tool_title">TikTok Watermark Remover</h2>
+      </div>
+      
+      <div class="input-group">
+        <i class="fas fa-link"></i>
+        <input type="url" id="videoUrl" placeholder="" required>
+      </div>
+      
+      <button type="submit" id="submitBtn" class="btn btn-primary btn-block">
+        <i class="fas fa-magic"></i> <span data-translate="remove_watermark">Remove Watermark & Download</span>
+      </button>
+      
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p class="loading-text" data-translate="processing">Processing video and removing watermark...</p>
+      </div>
+      
+      <div class="error-message" id="errorMsg"></div>
+      <div class="success-message" id="successMsg"></div>
+      
+      <div class="video-container" id="videoContainer">
+        <div class="video-wrapper">
+          <img class="video-thumbnail" id="videoThumbnail" src="" alt="Video thumbnail">
+          <div class="video-play-icon" id="playButton">
+            <i class="fas fa-play"></i>
+          </div>
+          <video id="videoPlayer" controls></video>
+        </div>
+        
+        <div class="video-info">
+          <div class="video-info-item">
+            <span class="video-info-label" data-translate="video_quality">Video Quality:</span>
+            <span class="video-info-value" id="videoQuality">HD 1080p</span>
+          </div>
+          <div class="video-info-item">
+            <span class="video-info-label" data-translate="file_size">File Size:</span>
+            <span class="video-info-value" id="videoSize">12.4 MB</span>
+          </div>
+          <div class="video-info-item">
+            <span class="video-info-label" data-translate="duration">Duration:</span>
+            <span class="video-info-value" id="videoDuration">0:15</span>
+          </div>
+          <div class="video-info-item">
+            <span class="video-info-label" data-translate="watermark">Watermark:</span>
+            <span class="video-info-value" id="watermarkStatus" data-translate="removed">Removed</span>
+          </div>
+        </div>
+        
+        <div class="video-actions">
+          <button class="btn btn-primary" id="downloadBtn">
+            <i class="fas fa-download"></i> <span data-translate="download_video">Download Video</span>
+          </button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Middle Ad Unit - Improved Implementation -->
+    <div class="ad-container">
+      <span class="ad-label">Advertisement</span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625976681275599"
+           crossorigin="anonymous"></script>
+      <!-- Millionaire - Responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6625976681275599"
+           data-ad-slot="1121232672"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    
+    <section class="features" id="features">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-water"></i>
+        </div>
+        <h3 class="feature-title" data-translate="feature1_title">Watermark Removal</h3>
+        <p class="feature-desc" data-translate="feature1_desc">Completely remove TikTok watermarks without any quality loss using our advanced algorithms.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-tachometer-alt"></i>
+        </div>
+        <h3 class="feature-title" data-translate="feature2_title">Fast Processing</h3>
+        <p class="feature-desc" data-translate="feature2_desc">Get your videos processed in seconds with our high-speed servers and optimized algorithms.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-mobile-alt"></i>
+        </div>
+        <h3 class="feature-title" data-translate="feature4_title">Mobile Friendly</h3>
+        <p class="feature-desc" data-translate="feature4_desc">Works perfectly on all devices including smartphones, tablets, and desktop computers.</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-cloud-download-alt"></i>
+        </div>
+        <h3 class="feature-title" data-translate="feature5_title">High Quality</h3>
+        <p class="feature-desc" data-translate="feature5_desc">Download videos in HD quality with no compression or quality loss.</p>
+      </div>
+    </section>
+    
+    <!-- Bottom Ad Unit - Improved Implementation -->
+    <div class="ad-container">
+      <span class="ad-label">Advertisement</span>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6625976681275599"
+           crossorigin="anonymous"></script>
+      <!-- Millionaire - Responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6625976681275599"
+           data-ad-slot="1121232672"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    
+    <section class="telegram-cta">
+      <h2 data-translate="telegram_title">Join Our Telegram Channel</h2>
+      <p data-translate="telegram_desc">Get updates, tips, and exclusive content about TikTok video downloading and editing.</p>
+      <a href="https://t.me/tiksnappro" class="telegram-btn" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-telegram"></i> <span data-translate="join_telegram">Join Telegram</span>
+      </a>
+    </section>
+    
+    <footer>
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3 class="footer-title">TikSnap Pro</h3>
+          <p data-translate="footer_about">The most advanced TikTok Watermark Remover tool with powerful features for content creators.</p>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title" data-translate="quick_links">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#downloader" data-translate="menu_downloader">Watermark Remover</a></li>
+            <li><a href="#features" data-translate="menu_features">Features</a></li>
+            <li><a href="https://t.me/tiksnappro" target="_blank" rel="noopener noreferrer" data-translate="menu_telegram">Telegram Channel</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title" data-translate="legal">Legal</h3>
+          <ul class="footer-links">
+            <li><a href="#" id="termsLinkFooter" data-translate="menu_terms">Terms of Service</a></li>
+            <li><a href="#" id="privacyLinkFooter" data-translate="menu_privacy">Privacy Policy</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title" data-translate="contact">Contact</h3>
+          <ul class="footer-links">
+            <li><a href="mailto:support@tiksnappro.com">support@tiksnappro.com</a></li>
+            <li><a href="https://t.me/tiksnappro" target="_blank" rel="noopener noreferrer" data-translate="menu_telegram">Telegram</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="copyright">
+        &copy; 2023 TikSnap Pro. <span data-translate="all_rights">All rights reserved.</span>
+      </div>
+    </footer>
+  </div>
+  
+  <!-- Tutorial Modal -->
+  <div class="tutorial" id="tutorial">
+    <div class="tutorial-content">
+      <h2 data-translate="tutorial_title">How to Download TikTok Videos Without Watermark</h2>
+      
+      <div class="tutorial-steps">
+        <div class="tutorial-step">
+          <div class="tutorial-step-number">1</div>
+          <div class="tutorial-step-content">
+            <h3 data-translate="step1_title">Find the TikTok video</h3>
+            <p data-translate="step1_desc">Open TikTok app and find the video you want to download.</p>
+          </div>
+        </div>
+        
+        <div class="tutorial-step">
+          <div class="tutorial-step-number">2</div>
+          <div class="tutorial-step-content">
+            <h3 data-translate="step2_title">Copy the video link</h3>
+            <p data-translate="step2_desc">Tap "Share" button and then "Copy link" to get the video URL.</p>
+          </div>
+        </div>
+        
+        <div class="tutorial-step">
+          <div class="tutorial-step-number">3</div>
+          <div class="tutorial-step-content">
+            <h3 data-translate="step3_title">Paste the link here</h3>
+            <p data-translate="step3_desc">Paste the copied URL in the input field above and click "Remove Watermark".</p>
+          </div>
+        </div>
+        
+        <div class="tutorial-step">
+          <div class="tutorial-step-number">4</div>
+          <div class="tutorial-step-content">
+            <h3 data-translate="step4_title">Download your video</h3>
+            <p data-translate="step4_desc">After processing, click "Download Video" to save it without watermark.</p>
+          </div>
+        </div>
+      </div>
+      
+      <button class="tutorial-close" id="tutorialClose" data-translate="got_it">Got it!</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Language translations
+      const translations = {
+        en: {
+          // Menu
+          menu_downloader: "Watermark Remover",
+          menu_features: "Features",
+          menu_telegram: "Telegram Channel",
+          menu_help: "Help",
+          menu_terms: "Terms",
+          menu_privacy: "Privacy",
+          
+          // Hero section
+          hero_title: "Download TikTok Videos Without Watermark",
+          hero_subtitle: "Get high-quality TikTok videos without watermark instantly. Our advanced tools ensure the best quality with no traces.",
+          try_now: "Try It Now",
+          
+          // Main tool
+          tool_title: "TikTok Watermark Remover",
+          video_placeholder: "Paste TikTok video URL here...",
+          remove_watermark: "Remove Watermark & Download",
+          processing: "Processing video and removing watermark...",
+          video_quality: "Video Quality:",
+          file_size: "File Size:",
+          duration: "Duration:",
+          watermark: "Watermark:",
+          removed: "Removed",
+          download_video: "Download Video",
+          
+          // Features
+          feature1_title: "Watermark Removal",
+          feature1_desc: "Completely remove TikTok watermarks without any quality loss using our advanced algorithms.",
+          feature2_title: "Fast Processing",
+          feature2_desc: "Get your videos processed in seconds with our high-speed servers and optimized algorithms.",
+          feature4_title: "Mobile Friendly",
+          feature4_desc: "Works perfectly on all devices including smartphones, tablets, and desktop computers.",
+          feature5_title: "High Quality",
+          feature5_desc: "Download videos in HD quality with no compression or quality loss.",
+          
+          // Telegram CTA
+          telegram_title: "Join Our Telegram Channel",
+          telegram_desc: "Get updates, tips, and exclusive content about TikTok video downloading and editing.",
+          join_telegram: "Join Telegram",
+          
+          // Footer
+          quick_links: "Quick Links",
+          legal: "Legal",
+          contact: "Contact",
+          footer_about: "The most advanced TikTok Watermark Remover tool with powerful features for content creators.",
+          all_rights: "All rights reserved.",
+          
+          // Tutorial
+          tutorial_title: "How to Download TikTok Videos Without Watermark",
+          step1_title: "Find the TikTok video",
+          step1_desc: "Open TikTok app and find the video you want to download.",
+          step2_title: "Copy the video link",
+          step2_desc: 'Tap "Share" button and then "Copy link" to get the video URL.',
+          step3_title: "Paste the link here",
+          step3_desc: 'Paste the copied URL in the input field above and click "Remove Watermark".',
+          step4_title: "Download your video",
+          step4_desc: "After processing, click \"Download Video\" to save it without watermark.",
+          got_it: "Got it!",
+          
+          // Error messages
+          error_empty: "Please enter a TikTok video URL",
+          error_invalid: "Please enter a valid TikTok URL",
+          error_fetch: "Failed to download video. Please try another URL.",
+          error_general: "An error occurred. Please try again.",
+          
+          // Success messages
+          success_watermark: "Watermark removed successfully! Ready to download.",
+          success_download: "Video downloaded successfully!",
+          
+          // Terms/Privacy
+          terms_title: "Terms of Service",
+          privacy_title: "Privacy Policy",
+          terms_content: "Terms content goes here...",
+          privacy_content: "Privacy policy content goes here...",
+          
+          // Clipboard notice
+          clipboard_notice: "TikTok link pasted from clipboard!"
+        },
+        es: {
+          // Menu
+          menu_downloader: "Eliminador de Marca de Agua",
+          menu_features: "Características",
+          menu_telegram: "Canal de Telegram",
+          menu_help: "Ayuda",
+          menu_terms: "Términos",
+          menu_privacy: "Privacidad",
+          
+          // Hero section
+          hero_title: "Descarga Videos de TikTok Sin Marca de Agua",
+          hero_subtitle: "Obtén videos de TikTok de alta calidad sin marca de agua al instante. Nuestras herramientas avanzadas garantizan la mejor calidad sin rastros.",
+          try_now: "Pruébalo Ahora",
+          
+          // Main tool
+          tool_title: "Eliminador de Marca de Agua de TikTok",
+          video_placeholder: "Pega la URL del video de TikTok aquí...",
+          remove_watermark: "Eliminar Marca de Agua y Descargar",
+          processing: "Procesando video y eliminando marca de agua...",
+          video_quality: "Calidad de Video:",
+          file_size: "Tamaño de Archivo:",
+          duration: "Duración:",
+          watermark: "Marca de Agua:",
+          removed: "Eliminada",
+          download_video: "Descargar Video",
+          
+          // Features
+          feature1_title: "Eliminación de Marca de Agua",
+          feature1_desc: "Elimina completamente las marcas de agua de TikTok sin pérdida de calidad utilizando nuestros algoritmos avanzados.",
+          feature2_title: "Procesamiento Rápido",
+          feature2_desc: "Obtén tus videos procesados en segundos con nuestros servidores de alta velocidad y algoritmos optimizados.",
+          feature4_title: "Compatible con Móviles",
+          feature4_desc: "Funciona perfectamente en todos los dispositivos, incluidos teléfonos inteligentes, tabletas y computadoras de escritorio.",
+          feature5_title: "Alta Calidad",
+          feature5_desc: "Descarga videos en calidad HD sin compresión ni pérdida de calidad.",
+          
+          // Telegram CTA
+          telegram_title: "Únete a Nuestro Canal de Telegram",
+          telegram_desc: "Recibe actualizaciones, consejos y contenido exclusivo sobre la descarga y edición de videos de TikTok.",
+          join_telegram: "Únete a Telegram",
+          
+          // Footer
+          quick_links: "Enlaces Rápidos",
+          legal: "Legal",
+          contact: "Contacto",
+          footer_about: "La herramienta más avanzada para eliminar marcas de agua de TikTok con potentes funciones para creadores de contenido.",
+          all_rights: "Todos los derechos reservados.",
+          
+          // Tutorial
+          tutorial_title: "Cómo Descargar Videos de TikTok Sin Marca de Agua",
+          step1_title: "Encuentra el video de TikTok",
+          step1_desc: "Abre la aplicación de TikTok y encuentra el video que deseas descargar.",
+          step2_title: "Copia el enlace del video",
+          step2_desc: 'Toca el botón "Compartir" y luego "Copiar enlace" para obtener la URL del video.',
+          step3_title: "Pega el enlace aquí",
+          step3_desc: 'Pega la URL copiada en el campo de entrada de arriba y haz clic en "Eliminar Marca de Agua".',
+          step4_title: "Descarga tu video",
+          step4_desc: "Después del procesamiento, haz clic en \"Descargar Video\" para guardarlo sin marca de agua.",
+          got_it: "¡Entendido!",
+          
+          // Error messages
+          error_empty: "Por favor ingresa una URL de video de TikTok",
+          error_invalid: "Por favor ingresa una URL válida de TikTok",
+          error_fetch: "Error al descargar el video. Por favor intenta con otra URL.",
+          error_general: "Ocurrió un error. Por favor inténtalo de nuevo.",
+          
+          // Success messages
+          success_watermark: "¡Marca de agua eliminada con éxito! Listo para descargar.",
+          success_download: "¡Video descargado con éxito!",
+          
+          // Terms/Privacy
+          terms_title: "Términos de Servicio",
+          privacy_title: "Política de Privacidad",
+          terms_content: "Contenido de términos aquí...",
+          privacy_content: "Contenido de política de privacidad aquí...",
+          
+          // Clipboard notice
+          clipboard_notice: "¡Enlace de TikTok pegado desde el portapapeles!"
+        }
+      };
+
+      // Set default language
+      let currentLang = localStorage.getItem('language') || 'en';
+      
+      // Function to change language
+      function changeLanguage(lang) {
+        currentLang = lang;
+        localStorage.setItem('language', lang);
+        
+        // Update all translatable elements
+        document.querySelectorAll('[data-translate]').forEach(element => {
+          const key = element.getAttribute('data-translate');
+          if (translations[lang] && translations[lang][key]) {
+            element.textContent = translations[lang][key];
+          }
+        });
+        
+        // Update input placeholder
+        if (translations[lang] && translations[lang]['video_placeholder']) {
+          document.getElementById('videoUrl').placeholder = translations[lang]['video_placeholder'];
+        }
+        
+        // Update current language display
+        document.getElementById('currentLanguage').textContent = 
+          lang === 'en' ? 'English' :
+          lang === 'es' ? 'Español' :
+          lang === 'fr' ? 'Français' :
+          lang === 'de' ? 'Deutsch' :
+          lang === 'ar' ? 'العربية' :
+          '中文';
+      }
+      
+      // Initialize language
+      changeLanguage(currentLang);
+      
+      // Sidebar functionality
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      const menuToggle = document.getElementById('menuToggle');
+      
+      // Toggle sidebar
+      function toggleSidebar() {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+        document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+      }
+      
+      menuToggle.addEventListener('click', toggleSidebar);
+      overlay.addEventListener('click', toggleSidebar);
+      
+      // Close sidebar when clicking on a link (for mobile)
+      document.querySelectorAll('.sidebar-menu a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          if (!this.classList.contains('tutorial-link') && window.innerWidth < 992) {
+            toggleSidebar();
+          }
+          
+          // Update active state
+          document.querySelectorAll('.sidebar-menu a').forEach(item => {
+            item.classList.remove('active');
+          });
+          this.classList.add('active');
+        });
+      });
+      
+      // Language selector
+      const languageBtn = document.getElementById('languageBtn');
+      const languageDropdown = document.getElementById('languageDropdown');
+      
+      languageBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        languageDropdown.classList.toggle('active');
+      });
+      
+      // Close language dropdown when clicking outside
+      document.addEventListener('click', function() {
+        languageDropdown.classList.remove('active');
+      });
+      
+      // Language change handler
+      document.querySelectorAll('.language-option').forEach(option => {
+        option.addEventListener('click', function() {
+          const lang = this.getAttribute('data-lang');
+          changeLanguage(lang);
+          languageDropdown.classList.remove('active');
+        });
+      });
+      
+      // Tutorial
+      const tutorial = document.getElementById('tutorial');
+      const tutorialClose = document.getElementById('tutorialClose');
+      const tutorialLinks = document.querySelectorAll('.tutorial-link');
+      
+      // Show tutorial only for first-time visitors
+      if (!localStorage.getItem('tutorialShown')) {
+        tutorial.classList.add('active');
+        localStorage.setItem('tutorialShown', 'true');
+      }
+      
+      // Show tutorial when clicking help link
+      tutorialLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          tutorial.classList.add('active');
+        });
+      });
+      
+      tutorialClose.addEventListener('click', function() {
+        tutorial.classList.remove('active');
+      });
+      
+      // Video downloader functionality
+      const urlInput = document.getElementById('videoUrl');
+      const errorMsg = document.getElementById('errorMsg');
+      const successMsg = document.getElementById('successMsg');
+      const videoContainer = document.getElementById('videoContainer');
+      const videoWrapper = document.querySelector('.video-wrapper');
+      const videoThumbnail = document.getElementById('videoThumbnail');
+      const playButton = document.getElementById('playButton');
+      const videoPlayer = document.getElementById('videoPlayer');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const loading = document.getElementById('loading');
+      const submitBtn = document.getElementById('submitBtn');
+      const videoQuality = document.getElementById('videoQuality');
+      const videoSize = document.getElementById('videoSize');
+      const videoDuration = document.getElementById('videoDuration');
+      const watermarkStatus = document.getElementById('watermarkStatus');
+      const tryNowBtn = document.getElementById('tryNowBtn');
+      
+      let currentVideoUrl = '';
+      let videoFilename = '';
+      let videoInfo = {};
+      
+      // Play button click handler
+      playButton.addEventListener('click', function() {
+        videoWrapper.classList.add('video-loaded');
+        videoPlayer.play();
+      });
+      
+      // Try Now button scroll to downloader
+      tryNowBtn.addEventListener('click', function() {
+        document.getElementById('downloader').scrollIntoView({ behavior: 'smooth' });
+      });
+      
+      // Function to fetch video without watermark
+      async function fetchVideo(url) {
+        try {
+          // First try with the primary API
+          const apiUrl = `https://api.tiklydown.eu.org/api/download?url=${encodeURIComponent(url)}`;
+          const response = await fetch(apiUrl);
+          
+          if (!response.ok) throw new Error('Failed to fetch video');
+          
+          const data = await response.json();
+          
+          if (data.video && data.video.noWatermark) {
+            return {
+              url: data.video.noWatermark,
+              thumbnail: data.video.cover || '',
+              success: true,
+              author: data.author?.nickname || 'tiktok',
+              id: data.video?.id || Date.now(),
+              duration: data.video?.duration || 0,
+              resolution: data.video?.resolution || '720x1280',
+              title: data.music?.title || 'TikTok Video',
+              views: data.video?.playCount || 0,
+              likes: data.video?.diggCount || 0,
+              comments: data.video?.commentCount || 0
+            };
+          } else {
+            throw new Error('No watermark video not found');
+          }
+        } catch (error) {
+          console.log('Primary API failed, trying backup...');
+          // If primary API fails, try with backup API
+          try {
+            const backupUrl = `https://tikwm.com/api/?url=${encodeURIComponent(url)}`;
+            const backupResponse = await fetch(backupUrl);
+            
+            if (!backupResponse.ok) throw new Error('Backup API failed');
+            
+            const backupData = await backupResponse.json();
+            
+            if (backupData.data && backupData.data.play) {
+              return {
+                url: backupData.data.play,
+                thumbnail: backupData.data.cover || '',
+                success: true,
+                author: backupData.data?.author?.nickname || 'tiktok',
+                id: backupData.data?.id || Date.now(),
+                duration: backupData.data?.duration || 0,
+                resolution: backupData.data?.resolution || '720x1280',
+                title: backupData.data?.music_info?.title || 'TikTok Video',
+                views: backupData.data?.play_count || 0,
+                likes: backupData.data?.digg_count || 0,
+                comments: backupData.data?.comment_count || 0
+              };
+            } else {
+              throw new Error(backupData.msg || 'Video not found');
+            }
+          } catch (backupError) {
+            throw new Error(translations[currentLang]['error_fetch'] || 'Failed to download video. Please try another URL.');
+          }
+        }
+      }
+      
+      // Function to get video duration in MM:SS format
+      function formatDuration(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+      }
+      
+      // Function to trigger download
+      function downloadFile(url, filename) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename || `TikSnap_${Date.now()}.mp4`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+      
+      // Function to show error message
+      function showError(message) {
+        errorMsg.textContent = message;
+        errorMsg.style.display = 'block';
+        successMsg.style.display = 'none';
+        setTimeout(() => {
+          errorMsg.style.display = 'none';
+        }, 5000);
+      }
+      
+      // Function to show success message
+      function showSuccess(message) {
+        successMsg.textContent = message;
+        successMsg.style.display = 'block';
+        errorMsg.style.display = 'none';
+        setTimeout(() => {
+          successMsg.style.display = 'none';
+        }, 3000);
+      }
+      
+      // Form submission handler
+      submitBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        
+        const url = urlInput.value.trim();
+        
+        // Validate URL
+        if (!url) {
+          showError(translations[currentLang]['error_empty'] || 'Please enter a TikTok video URL');
+          return;
+        }
+        
+        if (!url.includes('tiktok.com')) {
+          showError(translations[currentLang]['error_invalid'] || 'Please enter a valid TikTok URL');
+          return;
+        }
+        
+        // Reset UI
+        videoContainer.style.display = 'none';
+        videoWrapper.classList.remove('video-loaded');
+        errorMsg.style.display = 'none';
+        successMsg.style.display = 'none';
+        loading.style.display = 'block';
+        submitBtn.disabled = true;
+        
+        try {
+          const result = await fetchVideo(url);
+          
+          if (result.success) {
+            currentVideoUrl = result.url;
+            videoFilename = `TikSnap_${result.author}_${result.id}.mp4`;
+            videoInfo = result;
+            
+            // Set thumbnail if available
+            if (result.thumbnail) {
+              videoThumbnail.src = result.thumbnail;
+              videoThumbnail.style.display = 'block';
+            } else {
+              videoThumbnail.style.display = 'none';
+            }
+            
+            // Set video info
+            const resolution = result.resolution.split('x');
+            const quality = resolution[1] >= 1080 ? 'HD 1080p' : 
+                          resolution[1] >= 720 ? 'HD 720p' : 'SD';
+            
+            videoQuality.textContent = quality;
+            videoSize.textContent = translations[currentLang]['processing'] || 'Processing...';
+            videoDuration.textContent = formatDuration(result.duration);
+            watermarkStatus.textContent = translations[currentLang]['removed'] || 'Removed';
+            
+            // Load video
+            videoPlayer.src = result.url;
+            videoPlayer.load();
+            
+            // When metadata is loaded, update size info
+            videoPlayer.onloadedmetadata = function() {
+              const sizeMB = (videoPlayer.duration * 1.5).toFixed(1); // Approximate
+              videoSize.textContent = `${sizeMB} MB`;
+            };
+            
+            // Set up download button
+            downloadBtn.onclick = function(e) {
+              e.preventDefault();
+              downloadFile(currentVideoUrl, videoFilename);
+              showSuccess(translations[currentLang]['success_download'] || 'Video downloaded successfully!');
+            };
+            
+            videoContainer.style.display = 'block';
+            showSuccess(translations[currentLang]['success_watermark'] || 'Watermark removed successfully! Ready to download.');
+          } else {
+            showError(translations[currentLang]['error_fetch'] || 'Failed to download video. Please try another URL.');
+          }
+        } catch (error) {
+          console.error('Download error:', error);
+          showError(error.message || translations[currentLang]['error_general'] || 'An error occurred. Please try again.');
+        } finally {
+          loading.style.display = 'none';
+          submitBtn.disabled = false;
+        }
+      });
+      
+      // Clear error when user starts typing
+      urlInput.addEventListener('input', function() {
+        errorMsg.style.display = 'none';
+        successMsg.style.display = 'none';
+      });
+      
+      // Check clipboard for TikTok URL when page loads
+      function checkClipboard() {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          navigator.clipboard.readText().then(text => {
+            if (text.includes('tiktok.com')) {
+              urlInput.value = text;
+              // Show a small notification
+              const notification = document.createElement('div');
+              notification.textContent = translations[currentLang]['clipboard_notice'] || 'TikTok link pasted from clipboard!';
+              notification.style.position = 'fixed';
+              notification.style.bottom = '20px';
+              notification.style.right = '20px';
+              notification.style.backgroundColor = '#28a745';
+              notification.style.color = 'white';
+              notification.style.padding = '10px 15px';
+              notification.style.borderRadius = '4px';
+              notification.style.zIndex = '1000';
+              notification.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+              document.body.appendChild(notification);
+              
+              setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => {
+                  document.body.removeChild(notification);
+                }, 500);
+              }, 3000);
+            }
+          }).catch(err => {
+            console.log('Clipboard access not allowed');
+          });
+        }
+      }
+      
+      // Check clipboard on page load
+      checkClipboard();
+      
+      // Handle paste event for mobile devices
+      urlInput.addEventListener('paste', function(e) {
+        const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+        if (pastedText.includes('tiktok.com')) {
+          urlInput.value = pastedText;
+          e.preventDefault();
+        }
+      });
+      
+      // Terms and Privacy links
+      const termsLinks = document.querySelectorAll('#termsLink, #termsLinkFooter');
+      const privacyLinks = document.querySelectorAll('#privacyLink, #privacyLinkFooter');
+      
+      termsLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          alert(translations[currentLang]['terms_content'] || 'Terms of service content will be displayed here.');
+        });
+      });
+      
+      privacyLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          alert(translations[currentLang]['privacy_content'] || 'Privacy policy content will be displayed here.');
+        });
+      });
+      
+      // AdSense improvements - Ensure ads load properly
+      window.addEventListener('load', function() {
+        // Refresh ads after language change or other dynamic content changes
+        document.querySelectorAll('.adsbygoogle').forEach(ad => {
+          try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          } catch (e) {
+            console.log('AdSense error:', e);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
