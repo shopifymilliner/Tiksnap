@@ -571,6 +571,24 @@
       font-weight: 600;
       cursor: pointer;
     }
+
+    /* Download Progress */
+    .download-progress {
+      width: 100%;
+      height: 6px;
+      background: var(--dark-gray);
+      border-radius: 3px;
+      margin-top: 15px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .download-progress-bar {
+      height: 100%;
+      background: var(--black);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
     
     /* Responsive adjustments */
     @media (min-width: 768px) {
@@ -685,6 +703,10 @@
         <div class="message error-message" id="errorMsg"></div>
         <div class="message success-message" id="successMsg"></div>
         
+        <div class="download-progress" id="downloadProgress">
+          <div class="download-progress-bar" id="downloadProgressBar"></div>
+        </div>
+        
         <div class="video-container" id="videoContainer">
           <div class="video-wrapper">
             <img class="video-thumbnail" id="videoThumbnail" src="" alt="Video thumbnail">
@@ -707,12 +729,6 @@
               <span class="video-info-label">Watermark:</span>
               <span class="video-info-value" id="watermarkStatus">Removed</span>
             </div>
-          </div>
-          
-          <div class="video-actions">
-            <button class="btn btn-primary" id="downloadBtn">
-              <i class="fas fa-download"></i> Download Video
-            </button>
           </div>
         </div>
       </section>
@@ -859,7 +875,6 @@
       const successMsg = document.getElementById('successMsg');
       const videoContainer = document.getElementById('videoContainer');
       const videoThumbnail = document.getElementById('videoThumbnail');
-      const downloadBtn = document.getElementById('downloadBtn');
       const loading = document.getElementById('loading');
       const submitBtn = document.getElementById('submitBtn');
       const videoQuality = document.getElementById('videoQuality');
@@ -868,6 +883,8 @@
       const watermarkStatus = document.getElementById('watermarkStatus');
       const tryNowBtn = document.getElementById('tryNowBtn');
       const pasteBtn = document.getElementById('pasteBtn');
+      const downloadProgress = document.getElementById('downloadProgress');
+      const downloadProgressBar = document.getElementById('downloadProgressBar');
       
       let currentVideoUrl = '';
       let videoFilename = '';
@@ -988,14 +1005,68 @@
         return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
       }
       
-      // Function to trigger download
-      function downloadFile(url, filename) {
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename || `TikSnap_${Date.now()}.mp4`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+      // Function to trigger download with progress
+      async function downloadFile(url, filename) {
+        try {
+          // Show progress bar
+          downloadProgress.style.display = 'block';
+          downloadProgressBar.style.width = '0%';
+          
+          // Fetch the video with progress tracking
+          const response = await fetch(url);
+          
+          if (!response.ok) throw new Error('Failed to download video');
+          
+          const contentLength = response.headers.get('content-length');
+          const reader = response.body.getReader();
+          let receivedLength = 0;
+          let chunks = [];
+          
+          // Read the stream
+          while(true) {
+            const {done, value} = await reader.read();
+            
+            if (done) break;
+            
+            chunks.push(value);
+            receivedLength += value.length;
+            
+            // Update progress bar if we know the total size
+            if (contentLength) {
+              const percentComplete = Math.round((receivedLength / contentLength) * 100);
+              downloadProgressBar.style.width = `${percentComplete}%`;
+            }
+          }
+          
+          // Combine chunks into a single blob
+          const blob = new Blob(chunks);
+          const blobUrl = window.URL.createObjectURL(blob);
+          
+          // Create download link and trigger click
+          const a = document.createElement('a');
+          a.href = blobUrl;
+          a.download = filename || `TikSnap_${Date.now()}.mp4`;
+          document.body.appendChild(a);
+          a.click();
+          
+          // Clean up
+          setTimeout(() => {
+            window.URL.revokeObjectURL(blobUrl);
+            document.body.removeChild(a);
+          }, 100);
+          
+          // Hide progress bar after a delay
+          setTimeout(() => {
+            downloadProgress.style.display = 'none';
+          }, 1000);
+          
+          return true;
+        } catch (error) {
+          console.error('Download error:', error);
+          downloadProgress.style.display = 'none';
+          showError('Download failed. Please try again.');
+          return false;
+        }
       }
       
       // Function to show error message
@@ -1070,15 +1141,20 @@
             videoDuration.textContent = formatDuration(result.duration);
             watermarkStatus.textContent = 'Removed';
             
-            // Set up download button
-            downloadBtn.onclick = function(e) {
-              e.preventDefault();
-              downloadFile(currentVideoUrl, videoFilename);
-              showSuccess('Video downloaded successfully!');
-            };
+            // Start download immediately
+            const downloadSuccess = await downloadFile(currentVideoUrl, videoFilename);
             
-            videoContainer.style.display = 'block';
-            showSuccess('Watermark removed successfully! Ready to download.');
+            if (downloadSuccess) {
+              showSuccess('Video downloaded successfully!');
+              
+              // Show video info after download
+              videoContainer.style.display = 'block';
+              
+              // Estimate file size (this would be better if the API provided it)
+              const estimatedSize = resolution[1] >= 1080 ? '8-15 MB' : 
+                                  resolution[1] >= 720 ? '4-8 MB' : '2-4 MB';
+              videoSize.textContent = estimatedSize;
+            }
           } else {
             showError('Failed to download video. Please try another URL.');
           }
