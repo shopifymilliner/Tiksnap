@@ -11,10 +11,19 @@
     :root {
       --black: #000000;
       --white: #FFFFFF;
-      --gray: #F5F5F5;
-      --dark-gray: #E0E0E0;
+      --gray-100: #F8F9FA;
+      --gray-200: #E9ECEF;
+      --gray-300: #DEE2E6;
+      --gray-400: #CED4DA;
+      --gray-500: #ADB5BD;
+      --gray-600: #6C757D;
+      --gray-700: #495057;
+      --gray-800: #343A40;
+      --gray-900: #212529;
+      --primary: #FE2C55; /* TikTok red color */
+      --primary-light: #FFE5EA;
       --border-radius: 12px;
-      --box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --box-shadow: 0 2px 20px rgba(0,0,0,0.08);
       --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     
@@ -28,10 +37,15 @@
     body {
       font-family: 'Inter', sans-serif;
       background-color: var(--white);
-      color: var(--black);
+      color: var(--gray-900);
       min-height: 100vh;
       line-height: 1.6;
       overflow-x: hidden;
+      transition: var(--transition);
+    }
+    
+    body.sidebar-open {
+      overflow: hidden;
     }
     
     /* App Container */
@@ -54,10 +68,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px;
+      padding: 15px 20px;
       z-index: 100;
-      border-bottom: 1px solid var(--dark-gray);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      border-bottom: 1px solid var(--gray-200);
+      box-shadow: var(--box-shadow);
     }
     
     .logo {
@@ -70,8 +84,8 @@
     .logo-icon {
       width: 36px;
       height: 36px;
-      background: var(--black);
-      border-radius: 10px;
+      background: var(--primary);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -94,14 +108,25 @@
       color: var(--black);
       background: none;
       border: none;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+    
+    .menu-toggle:hover {
+      background: var(--gray-100);
     }
     
     /* Mobile Drawer Sidebar */
     .sidebar {
       position: fixed;
       top: 0;
-      left: -300px;
-      width: 280px;
+      left: -320px;
+      width: 300px;
       height: 100vh;
       background: var(--white);
       box-shadow: 5px 0 15px rgba(0,0,0,0.1);
@@ -111,51 +136,54 @@
       padding-top: 70px;
       display: flex;
       flex-direction: column;
-      border-right: 1px solid var(--dark-gray);
+      border-right: 1px solid var(--gray-200);
     }
     
     .sidebar.active {
       left: 0;
-      animation: slideIn 0.35s ease-out;
-    }
-    
-    @keyframes slideIn {
-      from { transform: translateX(-100%); }
-      to { transform: translateX(0); }
+      transform: translateX(0);
     }
     
     .sidebar-header {
-      padding: 20px;
+      padding: 25px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      border-bottom: 1px solid var(--dark-gray);
+      border-bottom: 1px solid var(--gray-200);
       margin-bottom: 10px;
+      background: var(--primary-light);
     }
     
     .sidebar-avatar {
-      width: 64px;
-      height: 64px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      background: var(--black);
+      background: var(--primary);
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 15px;
       color: var(--white);
-      font-size: 24px;
+      font-size: 28px;
       font-weight: 600;
+      box-shadow: 0 4px 12px rgba(254, 44, 85, 0.3);
     }
     
     .sidebar-title {
       font-size: 18px;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 5px;
+      color: var(--black);
+    }
+    
+    .sidebar-subtitle {
+      font-size: 14px;
+      color: var(--gray-600);
     }
     
     .sidebar-menu {
       list-style: none;
-      padding: 15px;
+      padding: 15px 10px;
       flex-grow: 1;
     }
     
@@ -167,31 +195,22 @@
       display: flex;
       align-items: center;
       padding: 14px 16px;
-      color: var(--black);
+      color: var(--gray-800);
       text-decoration: none;
       transition: var(--transition);
       border-radius: var(--border-radius);
       position: relative;
     }
     
-    .sidebar-menu a::after {
-      content: '';
-      position: absolute;
-      left: 16px;
-      bottom: 0;
-      width: calc(100% - 32px);
-      height: 1px;
-      background: var(--dark-gray);
-      transition: var(--transition);
-    }
-    
     .sidebar-menu a:hover {
-      background: var(--gray);
+      background: var(--primary-light);
+      color: var(--primary);
     }
     
     .sidebar-menu a.active {
-      background: var(--gray);
-      font-weight: 500;
+      background: var(--primary-light);
+      font-weight: 600;
+      color: var(--primary);
     }
     
     .sidebar-menu a i {
@@ -199,6 +218,21 @@
       width: 20px;
       text-align: center;
       font-size: 18px;
+      color: var(--gray-600);
+      transition: var(--transition);
+    }
+    
+    .sidebar-menu a:hover i,
+    .sidebar-menu a.active i {
+      color: var(--primary);
+    }
+    
+    .sidebar-footer {
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray-500);
+      border-top: 1px solid var(--gray-200);
     }
     
     /* Overlay */
@@ -208,12 +242,12 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.5);
       z-index: 999;
       opacity: 0;
       visibility: hidden;
       transition: var(--transition);
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(3px);
     }
     
     .overlay.active {
@@ -228,6 +262,13 @@
       margin: 0 auto;
       width: 100%;
       flex-grow: 1;
+      transition: var(--transition);
+    }
+    
+    .sidebar-open .main-content {
+      transform: translateX(20px);
+      opacity: 0.8;
+      filter: blur(1px);
     }
     
     /* Hero Section */
@@ -238,36 +279,45 @@
     }
     
     .hero h1 {
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 700;
       margin-bottom: 15px;
       line-height: 1.3;
+      color: var(--black);
     }
     
     .hero p {
       font-size: 15px;
-      color: var(--black);
+      color: var(--gray-600);
       margin-bottom: 25px;
-      opacity: 0.8;
     }
     
     /* Main Tool */
     .main-tool {
       background: var(--white);
       border-radius: var(--border-radius);
-      padding: 20px;
+      padding: 25px;
       box-shadow: var(--box-shadow);
       margin-bottom: 30px;
-      border: 1px solid var(--dark-gray);
+      border: 1px solid var(--gray-200);
     }
     
     .tool-header {
       margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     
     .tool-header h2 {
       font-size: 18px;
       font-weight: 600;
+      color: var(--black);
+    }
+    
+    .tool-header i {
+      color: var(--primary);
+      font-size: 20px;
     }
     
     /* Input Group with Paste Button */
@@ -281,25 +331,27 @@
       left: 15px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--black);
-      opacity: 0.6;
+      color: var(--gray-600);
+      z-index: 1;
     }
     
     input[type="url"] {
       width: 100%;
       padding: 15px 15px 15px 45px;
       border-radius: var(--border-radius);
-      border: 1px solid var(--dark-gray);
+      border: 1px solid var(--gray-300);
       background-color: var(--white);
-      color: var(--black);
+      color: var(--gray-900);
       font-size: 15px;
       outline: none;
       transition: var(--transition);
+      position: relative;
+      z-index: 0;
     }
     
     input[type="url"]:focus {
-      border-color: var(--black);
-      box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(254, 44, 85, 0.2);
     }
     
     .paste-btn {
@@ -307,10 +359,10 @@
       right: 8px;
       top: 50%;
       transform: translateY(-50%);
-      background: var(--black);
+      background: var(--primary);
       color: var(--white);
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       padding: 7px 12px;
       font-size: 13px;
       font-weight: 500;
@@ -319,14 +371,16 @@
       display: flex;
       align-items: center;
       gap: 5px;
+      z-index: 1;
     }
     
     .paste-btn:hover {
-      opacity: 0.9;
+      background: #e61a4b;
     }
     
     .paste-btn i {
       font-size: 12px;
+      color: var(--white);
     }
     
     /* Buttons */
@@ -346,18 +400,26 @@
     }
     
     .btn-primary {
-      background: var(--black);
+      background: var(--primary);
       color: var(--white);
     }
     
     .btn-primary:hover {
-      opacity: 0.9;
+      background: #e61a4b;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(254, 44, 85, 0.3);
     }
     
     /* Video Container */
     .video-container {
       margin-top: 20px;
       display: none;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     .video-wrapper {
@@ -365,8 +427,9 @@
       border-radius: var(--border-radius);
       overflow: hidden;
       margin-bottom: 15px;
-      background: var(--gray);
+      background: var(--gray-100);
       aspect-ratio: 9/16;
+      box-shadow: var(--box-shadow);
     }
     
     .video-thumbnail {
@@ -374,10 +437,40 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: var(--transition);
+    }
+    
+    .video-play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background: rgba(254, 44, 85, 0.8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      opacity: 0.9;
+    }
+    
+    .video-play-btn:hover {
+      background: rgba(254, 44, 85, 0.95);
+      transform: translate(-50%, -50%) scale(1.05);
+      opacity: 1;
+    }
+    
+    .video-play-btn i {
+      color: var(--white);
+      font-size: 24px;
+      margin-left: 5px;
     }
     
     .video-info {
-      background: var(--gray);
+      background: var(--gray-100);
       padding: 15px;
       border-radius: var(--border-radius);
       margin-top: 15px;
@@ -387,7 +480,7 @@
       display: flex;
       justify-content: space-between;
       padding: 10px 0;
-      border-bottom: 1px solid var(--dark-gray);
+      border-bottom: 1px solid var(--gray-200);
     }
     
     .video-info-item:last-child {
@@ -396,12 +489,13 @@
     
     .video-info-label {
       font-size: 14px;
-      opacity: 0.8;
+      color: var(--gray-600);
     }
     
     .video-info-value {
       font-weight: 500;
       font-size: 14px;
+      color: var(--black);
     }
     
     /* Loading State */
@@ -415,8 +509,8 @@
       width: 40px;
       height: 40px;
       margin: 0 auto 15px;
-      border: 4px solid rgba(0,0,0,0.1);
-      border-left-color: var(--black);
+      border: 4px solid rgba(254, 44, 85, 0.1);
+      border-left-color: var(--primary);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -428,7 +522,7 @@
     .loading-text {
       margin-top: 10px;
       font-size: 14px;
-      opacity: 0.8;
+      color: var(--gray-600);
     }
     
     /* Messages */
@@ -438,16 +532,19 @@
       text-align: center;
       margin: 15px 0;
       display: none;
+      animation: fadeIn 0.3s ease-out;
     }
     
     .error-message {
-      background: var(--gray);
-      color: var(--black);
+      background: #FFF0F0;
+      color: #D32F2F;
+      border: 1px solid #FFCDD2;
     }
     
     .success-message {
-      background: var(--gray);
-      color: var(--black);
+      background: #F0FFF4;
+      color: #2E7D32;
+      border: 1px solid #C8E6C9;
     }
     
     /* Features Section */
@@ -464,36 +561,39 @@
       padding: 20px;
       transition: var(--transition);
       box-shadow: var(--box-shadow);
-      border: 1px solid var(--dark-gray);
+      border: 1px solid var(--gray-200);
     }
     
     .feature-card:hover {
-      transform: translateY(-3px);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     }
     
     .feature-icon {
       width: 50px;
       height: 50px;
-      background: var(--black);
-      border-radius: 12px;
+      background: var(--primary);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 15px;
       font-size: 20px;
       color: var(--white);
+      box-shadow: 0 4px 8px rgba(254, 44, 85, 0.3);
     }
     
     .feature-title {
       font-size: 17px;
       font-weight: 600;
       margin-bottom: 10px;
+      color: var(--black);
     }
     
     .feature-desc {
       font-size: 14px;
       line-height: 1.5;
-      opacity: 0.8;
+      color: var(--gray-600);
     }
     
     /* Tutorial Modal */
@@ -512,14 +612,18 @@
       color: var(--white);
       padding: 20px;
       display: none;
+      opacity: 0;
+      transition: var(--transition);
     }
     
     .tutorial.active {
       display: flex;
+      opacity: 1;
+      animation: fadeIn 0.3s ease-out;
     }
     
     .tutorial-content {
-      max-width: 100%;
+      max-width: 500px;
       width: 100%;
       text-align: center;
       padding: 20px;
@@ -540,8 +644,8 @@
     .tutorial-step-number {
       width: 32px;
       height: 32px;
-      background: var(--white);
-      color: var(--black);
+      background: var(--primary);
+      color: var(--white);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -557,37 +661,25 @@
     
     .tutorial-step-content p {
       font-size: 14px;
-      color: var(--gray);
+      color: var(--gray-400);
       line-height: 1.6;
     }
     
     .tutorial-close {
       margin-top: 20px;
       padding: 13px 30px;
-      background: var(--white);
-      color: var(--black);
+      background: var(--primary);
+      color: var(--white);
       border: none;
       border-radius: var(--border-radius);
       font-weight: 600;
       cursor: pointer;
+      transition: var(--transition);
     }
-
-    /* Download Progress */
-    .download-progress {
-      width: 100%;
-      height: 6px;
-      background: var(--dark-gray);
-      border-radius: 3px;
-      margin-top: 15px;
-      overflow: hidden;
-      display: none;
-    }
-
-    .download-progress-bar {
-      height: 100%;
-      background: var(--black);
-      width: 0%;
-      transition: width 0.3s ease;
+    
+    .tutorial-close:hover {
+      background: #e61a4b;
+      transform: translateY(-2px);
     }
     
     /* Responsive adjustments */
@@ -602,6 +694,21 @@
       
       .features {
         grid-template-columns: 1fr 1fr;
+      }
+      
+      /* Desktop sidebar behavior */
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .sidebar-open .main-content {
+        transform: none;
+        opacity: 1;
+        filter: none;
       }
     }
     
@@ -630,6 +737,16 @@
       .paste-btn i {
         margin-right: 0;
       }
+      
+      /* Mobile sidebar behavior */
+      .sidebar {
+        width: 280px;
+        left: -280px;
+      }
+      
+      .sidebar.active {
+        left: 0;
+      }
     }
   </style>
 </head>
@@ -656,13 +773,20 @@
       <div class="sidebar-header">
         <div class="sidebar-avatar">TP</div>
         <h3 class="sidebar-title">TikSnap Pro</h3>
+        <p class="sidebar-subtitle">Watermark Remover</p>
       </div>
       
       <ul class="sidebar-menu">
         <li><a href="#downloader" class="active"><i class="fas fa-magic"></i> Watermark Remover</a></li>
         <li><a href="#features"><i class="fas fa-star"></i> Features</a></li>
-        <li><a href="#tutorial" class="tutorial-link"><i class="fas fa-question-circle"></i> Help</a></li>
+        <li><a href="#" class="tutorial-link"><i class="fas fa-question-circle"></i> How It Works</a></li>
+        <li><a href="#"><i class="fas fa-share-alt"></i> Share App</a></li>
+        <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
       </ul>
+      
+      <div class="sidebar-footer">
+        <p>Version 1.0.0<br>© 2023 TikSnap Pro</p>
+      </div>
     </div>
     
     <!-- Overlay -->
@@ -680,6 +804,7 @@
       
       <section class="main-tool" id="downloader">
         <div class="tool-header">
+          <i class="fas fa-magic"></i>
           <h2>TikTok Watermark Remover</h2>
         </div>
         
@@ -703,13 +828,12 @@
         <div class="message error-message" id="errorMsg"></div>
         <div class="message success-message" id="successMsg"></div>
         
-        <div class="download-progress" id="downloadProgress">
-          <div class="download-progress-bar" id="downloadProgressBar"></div>
-        </div>
-        
         <div class="video-container" id="videoContainer">
           <div class="video-wrapper">
             <img class="video-thumbnail" id="videoThumbnail" src="" alt="Video thumbnail">
+            <div class="video-play-btn" id="playBtn">
+              <i class="fas fa-play"></i>
+            </div>
           </div>
           
           <div class="video-info">
@@ -729,6 +853,12 @@
               <span class="video-info-label">Watermark:</span>
               <span class="video-info-value" id="watermarkStatus">Removed</span>
             </div>
+          </div>
+          
+          <div class="video-actions">
+            <button class="btn btn-primary" id="downloadBtn">
+              <i class="fas fa-download"></i> Download Video
+            </button>
           </div>
         </div>
       </section>
@@ -818,16 +948,23 @@
       const sidebar = document.getElementById('sidebar');
       const overlay = document.getElementById('overlay');
       const menuToggle = document.getElementById('menuToggle');
+      const body = document.body;
       
       // Toggle sidebar
       function toggleSidebar() {
         sidebar.classList.toggle('active');
         overlay.classList.toggle('active');
-        document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+        body.classList.toggle('sidebar-open');
+        
+        // Close sidebar when clicking outside
+        if (sidebar.classList.contains('active')) {
+          overlay.addEventListener('click', toggleSidebar);
+        } else {
+          overlay.removeEventListener('click', toggleSidebar);
+        }
       }
       
       menuToggle.addEventListener('click', toggleSidebar);
-      overlay.addEventListener('click', toggleSidebar);
       
       // Close sidebar when clicking on a link (for mobile)
       document.querySelectorAll('.sidebar-menu a').forEach(link => {
@@ -875,6 +1012,8 @@
       const successMsg = document.getElementById('successMsg');
       const videoContainer = document.getElementById('videoContainer');
       const videoThumbnail = document.getElementById('videoThumbnail');
+      const playBtn = document.getElementById('playBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
       const loading = document.getElementById('loading');
       const submitBtn = document.getElementById('submitBtn');
       const videoQuality = document.getElementById('videoQuality');
@@ -883,8 +1022,6 @@
       const watermarkStatus = document.getElementById('watermarkStatus');
       const tryNowBtn = document.getElementById('tryNowBtn');
       const pasteBtn = document.getElementById('pasteBtn');
-      const downloadProgress = document.getElementById('downloadProgress');
-      const downloadProgressBar = document.getElementById('downloadProgressBar');
       
       let currentVideoUrl = '';
       let videoFilename = '';
@@ -896,6 +1033,13 @@
           behavior: 'smooth',
           block: 'start'
         });
+      });
+      
+      // Play button functionality
+      playBtn.addEventListener('click', function() {
+        if (currentVideoUrl) {
+          window.open(currentVideoUrl, '_blank');
+        }
       });
       
       // Improved Paste button functionality
@@ -968,26 +1112,26 @@
           console.log('Primary API failed, trying backup...');
           // If primary API fails, try with backup API
           try {
-            const backupUrl = `https://tikwm.com/api/?url=${encodeURIComponent(url)}`;
+            const backupUrl = `https://api.douyin.wtf/api?url=${encodeURIComponent(url)}`;
             const backupResponse = await fetch(backupUrl);
             
             if (!backupResponse.ok) throw new Error('Backup API failed');
             
             const backupData = await backupResponse.json();
             
-            if (backupData.data && backupData.data.play) {
+            if (backupData.nwm_video_url) {
               return {
-                url: backupData.data.play,
-                thumbnail: backupData.data.cover || '',
+                url: backupData.nwm_video_url,
+                thumbnail: backupData.cover || '',
                 success: true,
-                author: backupData.data?.author?.nickname || 'tiktok',
-                id: backupData.data?.id || Date.now(),
-                duration: backupData.data?.duration || 0,
-                resolution: backupData.data?.resolution || '720x1280',
-                title: backupData.data?.music_info?.title || 'TikTok Video',
-                views: backupData.data?.play_count || 0,
-                likes: backupData.data?.digg_count || 0,
-                comments: backupData.data?.comment_count || 0
+                author: backupData.author || 'tiktok',
+                id: backupData.id || Date.now(),
+                duration: backupData.duration || 0,
+                resolution: '720x1280',
+                title: backupData.title || 'TikTok Video',
+                views: backupData.play_count || 0,
+                likes: backupData.digg_count || 0,
+                comments: backupData.comment_count || 0
               };
             } else {
               throw new Error(backupData.msg || 'Video not found');
@@ -1005,68 +1149,14 @@
         return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
       }
       
-      // Function to trigger download with progress
-      async function downloadFile(url, filename) {
-        try {
-          // Show progress bar
-          downloadProgress.style.display = 'block';
-          downloadProgressBar.style.width = '0%';
-          
-          // Fetch the video with progress tracking
-          const response = await fetch(url);
-          
-          if (!response.ok) throw new Error('Failed to download video');
-          
-          const contentLength = response.headers.get('content-length');
-          const reader = response.body.getReader();
-          let receivedLength = 0;
-          let chunks = [];
-          
-          // Read the stream
-          while(true) {
-            const {done, value} = await reader.read();
-            
-            if (done) break;
-            
-            chunks.push(value);
-            receivedLength += value.length;
-            
-            // Update progress bar if we know the total size
-            if (contentLength) {
-              const percentComplete = Math.round((receivedLength / contentLength) * 100);
-              downloadProgressBar.style.width = `${percentComplete}%`;
-            }
-          }
-          
-          // Combine chunks into a single blob
-          const blob = new Blob(chunks);
-          const blobUrl = window.URL.createObjectURL(blob);
-          
-          // Create download link and trigger click
-          const a = document.createElement('a');
-          a.href = blobUrl;
-          a.download = filename || `TikSnap_${Date.now()}.mp4`;
-          document.body.appendChild(a);
-          a.click();
-          
-          // Clean up
-          setTimeout(() => {
-            window.URL.revokeObjectURL(blobUrl);
-            document.body.removeChild(a);
-          }, 100);
-          
-          // Hide progress bar after a delay
-          setTimeout(() => {
-            downloadProgress.style.display = 'none';
-          }, 1000);
-          
-          return true;
-        } catch (error) {
-          console.error('Download error:', error);
-          downloadProgress.style.display = 'none';
-          showError('Download failed. Please try again.');
-          return false;
-        }
+      // Function to trigger download
+      function downloadFile(url, filename) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename || `TikSnap_${Date.now()}.mp4`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       }
       
       // Function to show error message
@@ -1141,20 +1231,15 @@
             videoDuration.textContent = formatDuration(result.duration);
             watermarkStatus.textContent = 'Removed';
             
-            // Start download immediately
-            const downloadSuccess = await downloadFile(currentVideoUrl, videoFilename);
-            
-            if (downloadSuccess) {
+            // Set up download button
+            downloadBtn.onclick = function(e) {
+              e.preventDefault();
+              downloadFile(currentVideoUrl, videoFilename);
               showSuccess('Video downloaded successfully!');
-              
-              // Show video info after download
-              videoContainer.style.display = 'block';
-              
-              // Estimate file size (this would be better if the API provided it)
-              const estimatedSize = resolution[1] >= 1080 ? '8-15 MB' : 
-                                  resolution[1] >= 720 ? '4-8 MB' : '2-4 MB';
-              videoSize.textContent = estimatedSize;
-            }
+            };
+            
+            videoContainer.style.display = 'block';
+            showSuccess('Watermark removed successfully! Ready to download.');
           } else {
             showError('Failed to download video. Please try another URL.');
           }
@@ -1184,6 +1269,13 @@
       
       // Auto-focus input on page load
       urlInput.focus();
+      
+      // Close sidebar when pressing ESC key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+          toggleSidebar();
+        }
+      });
     });
   </script>
 </body>
