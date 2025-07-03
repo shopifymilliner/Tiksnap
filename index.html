@@ -383,6 +383,40 @@
       color: var(--white);
     }
     
+    .clear-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--gray-300);
+      color: var(--gray-700);
+      border: none;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      z-index: 1;
+      display: none;
+    }
+    
+    .clear-btn:hover {
+      background: var(--gray-400);
+      color: var(--gray-800);
+    }
+    
+    .clear-btn i {
+      font-size: 12px;
+    }
+    
+    /* Adjust paste button position when clear button is visible */
+    .input-group.has-value .paste-btn {
+      right: 40px;
+    }
+    
     /* Buttons */
     .btn {
       padding: 15px 20px;
@@ -710,6 +744,10 @@
         opacity: 1;
         filter: none;
       }
+      
+      .input-group.has-value .paste-btn {
+        right: 46px;
+      }
     }
     
     /* Small devices (landscape phones) */
@@ -738,6 +776,11 @@
         margin-right: 0;
       }
       
+      .clear-btn {
+        width: 24px;
+        height: 24px;
+      }
+      
       /* Mobile sidebar behavior */
       .sidebar {
         width: 280px;
@@ -746,6 +789,10 @@
       
       .sidebar.active {
         left: 0;
+      }
+      
+      .input-group.has-value .paste-btn {
+        right: 38px;
       }
     }
   </style>
@@ -762,7 +809,7 @@
         <div class="logo-icon">
           <i class="fas fa-video"></i>
         </div>
-        <div class="logo-text">TikSnap Pro</div>
+        <div class="logo-text">TikSnap</div>
       </a>
       
       <div></div> <!-- Spacer for alignment -->
@@ -772,7 +819,7 @@
     <div class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-avatar">TP</div>
-        <h3 class="sidebar-title">TikSnap Pro</h3>
+        <h3 class="sidebar-title">TikSnap</h3>
         <p class="sidebar-subtitle">Watermark Remover</p>
       </div>
       
@@ -785,7 +832,7 @@
       </ul>
       
       <div class="sidebar-footer">
-        <p>Version 1.0.0<br>© 2023 TikSnap Pro</p>
+        <p>Version 1.0.0<br>© 2023 TikSnap</p>
       </div>
     </div>
     
@@ -813,6 +860,9 @@
           <input type="url" id="videoUrl" placeholder="Paste TikTok video URL here..." required>
           <button class="paste-btn" id="pasteBtn">
             <i class="fas fa-paste"></i> <span>Paste</span>
+          </button>
+          <button class="clear-btn" id="clearBtn">
+            <i class="fas fa-times"></i>
           </button>
         </div>
         
@@ -853,12 +903,6 @@
               <span class="video-info-label">Watermark:</span>
               <span class="video-info-value" id="watermarkStatus">Removed</span>
             </div>
-          </div>
-          
-          <div class="video-actions">
-            <button class="btn btn-primary" id="downloadBtn">
-              <i class="fas fa-download"></i> Download Video
-            </button>
           </div>
         </div>
       </section>
@@ -1013,7 +1057,6 @@
       const videoContainer = document.getElementById('videoContainer');
       const videoThumbnail = document.getElementById('videoThumbnail');
       const playBtn = document.getElementById('playBtn');
-      const downloadBtn = document.getElementById('downloadBtn');
       const loading = document.getElementById('loading');
       const submitBtn = document.getElementById('submitBtn');
       const videoQuality = document.getElementById('videoQuality');
@@ -1022,6 +1065,8 @@
       const watermarkStatus = document.getElementById('watermarkStatus');
       const tryNowBtn = document.getElementById('tryNowBtn');
       const pasteBtn = document.getElementById('pasteBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const inputGroup = document.querySelector('.input-group');
       
       let currentVideoUrl = '';
       let videoFilename = '';
@@ -1042,6 +1087,29 @@
         }
       });
       
+      // Input event listener to show/hide clear button
+      urlInput.addEventListener('input', function() {
+        errorMsg.style.display = 'none';
+        successMsg.style.display = 'none';
+        
+        if (this.value) {
+          clearBtn.style.display = 'flex';
+          inputGroup.classList.add('has-value');
+        } else {
+          clearBtn.style.display = 'none';
+          inputGroup.classList.remove('has-value');
+        }
+      });
+      
+      // Clear button functionality
+      clearBtn.addEventListener('click', function() {
+        urlInput.value = '';
+        urlInput.focus();
+        clearBtn.style.display = 'none';
+        inputGroup.classList.remove('has-value');
+        videoContainer.style.display = 'none';
+      });
+      
       // Improved Paste button functionality
       async function handlePaste() {
         try {
@@ -1051,6 +1119,8 @@
             urlInput.value = text;
             showSuccess('TikTok link pasted successfully!');
             urlInput.focus();
+            clearBtn.style.display = 'flex';
+            inputGroup.classList.add('has-value');
           } else {
             showError('Clipboard does not contain a TikTok URL');
           }
@@ -1231,15 +1301,13 @@
             videoDuration.textContent = formatDuration(result.duration);
             watermarkStatus.textContent = 'Removed';
             
-            // Set up download button
-            downloadBtn.onclick = function(e) {
-              e.preventDefault();
+            // Trigger download automatically
+            setTimeout(() => {
               downloadFile(currentVideoUrl, videoFilename);
               showSuccess('Video downloaded successfully!');
-            };
+            }, 500);
             
             videoContainer.style.display = 'block';
-            showSuccess('Watermark removed successfully! Ready to download.');
           } else {
             showError('Failed to download video. Please try another URL.');
           }
@@ -1252,18 +1320,14 @@
         }
       });
       
-      // Clear error when user starts typing
-      urlInput.addEventListener('input', function() {
-        errorMsg.style.display = 'none';
-        successMsg.style.display = 'none';
-      });
-      
       // Handle paste event for mobile devices
       urlInput.addEventListener('paste', function(e) {
         const pastedText = (e.clipboardData || window.clipboardData).getData('text');
         if (pastedText.includes('tiktok.com')) {
           urlInput.value = pastedText;
           e.preventDefault();
+          clearBtn.style.display = 'flex';
+          inputGroup.classList.add('has-value');
         }
       });
       
